@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "377829568065",
+    "firebase_url": "https://kurditing-default-rtdb.firebaseio.com",
+    "project_id": "kurditing",
+    "storage_bucket": "kurditing.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:377829568065:android:9db8fda1e056195d6520c0",
+        "android_client_info": {
+          "package_name": "com.example.kurditing"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "377829568065-af42adut3nahn6smetjsc603p6sj1ja4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-9MZoRKe-8BPTYCUXVhVLGomfde02WM4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "377829568065-af42adut3nahn6smetjsc603p6sj1ja4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

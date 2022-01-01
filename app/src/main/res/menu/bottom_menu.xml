@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- pada folder menu dibuat sebuah file bottom_menu.xml yang akan digunakan pada bottomNavigationView
+nantinya -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- untuk setiap item navigasi berikan id, icon, serta title yang akan ditampilkan -->
+    <item
+        android:id="@+id/homeFragment"
+        android:icon="@drawable/ic_home"
+        android:title="Beranda" />
+    <item
+        android:id="@+id/searchFragment"
+        android:icon="@drawable/ic_search"
+        android:title="Cari" />
+    <item
+        android:id="@+id/courseFragment"
+        android:icon="@drawable/ic_kursus"
+        android:title="Kursus Saya" />
+    <item
+        android:id="@+id/accountFragment"
+        android:icon="@drawable/ic_akun"
+        android:title="Akun" />
+</menu>

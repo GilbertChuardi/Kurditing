@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".search.SearchCategoryFragment">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="@string/kategori"
+        android:textColor="@color/colorPurpleDark" />
+
+    <Button
+        android:id="@+id/btn_dm"
+        style="?borderlessButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins"
+        android:gravity="left|center_vertical"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:text="Digital Marketing"
+        android:textAllCaps="false"
+        android:textColor="@color/colorPurpleBlack" />
+
+    <Button
+        android:id="@+id/btn_cp"
+        style="?borderlessButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins"
+        android:gravity="left|center_vertical"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:text="Closing dan Penjualan"
+        android:textAllCaps="false"
+        android:textColor="@color/colorPurpleBlack" />
+
+    <Button
+        android:id="@+id/btn_mb"
+        style="?borderlessButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins"
+        android:gravity="left|center_vertical"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:text="Model Bisnis"
+        android:textAllCaps="false"
+        android:textColor="@color/colorPurpleBlack" />
+
+    <Button
+        android:id="@+id/btn_lainnya"
+        style="?borderlessButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins"
+        android:gravity="left|center_vertical"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:text="Keahlian lainnya..."
+        android:textAllCaps="false"
+        android:textColor="@color/colorPurpleBlack" />
+
+
+</LinearLayout>

@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">Kurditing</string>
+    <string name="slogan">Maestro of Digital Marketing</string>
+    <string name="search_text">Saya ingin mempelajari...</string>
+    <string name="best_seller">Best Seller</string>
+    <string name="email">Email</string>
+    <string name="kata_sandi">Kata Sandi</string>
+    <string name="nama">Nama Lengkap</string>
+    <string name="konfirmasi_kata_sandi">Konfirmasi Kata Sandi</string>
+    <string name="masuk">Masuk</string>
+    <string name="daftar">Daftar</string>
+    <string name="kursus_saya">Kursus Saya</string>
+    <string name="belum_punya_akun">Belum punya akun? Daftar</string>
+    <string name="sudah_punya_akun">Sudah punya akun? Masuk</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="kategori">KATEGORI</string>
+    <string name="syarat_ketentuan"><![CDATA[Syarat & Ketentuan]]></string>
+    <string name="tentang_kurditing">Tentang Kurditing</string>
 </resources>
