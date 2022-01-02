@@ -16,7 +16,6 @@ import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.fragment_course.*
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.fragment_search_result.*
-import kotlinx.android.synthetic.main.fragment_search_result.view.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -47,18 +46,10 @@ class SearchResultFragment : Fragment() {
         }
     }
 
-    // pada SearchResultFragment dalam method onCreateView diterima isi bundle yang telah dikirim dari SearchFragment sebelumnya
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // tampung objek view dari fragment ke dalam variabel dengan tujuan agar dapat melakukan manipulasi lebih lanjut
-        // sebelum direturn
-        val view = inflater.inflate(R.layout.fragment_search_result, container, false)
-
-        // ubah text dari tv_search_result dengan nilai string dari arguments
-        view.tv_search_result.text = arguments?.getString("SEARCH_TERM")
-
-        // return objek view dari fragment
-        return view
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_search_result, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -107,7 +98,9 @@ class SearchResultFragment : Fragment() {
                     startActivity(intent)
                 }
 
-                rv_search_result.adapter = adapter
+                if(activity != null) {
+                    rv_search_result.adapter = adapter
+                }
 //                adapter.filter()
             }
 

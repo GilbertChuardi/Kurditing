@@ -15,7 +15,7 @@ import com.example.kurditing.model.User
 import com.example.kurditing.utils.Preferences
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_referal.*
-import kotlinx.android.synthetic.main.activity_referal.btn_ajak_teman
+import kotlinx.android.synthetic.main.activity_referal.btn_ambil_kelas
 import kotlinx.android.synthetic.main.activity_terms.iv_back
 
 
@@ -39,10 +39,7 @@ class ReferalActivity : AppCompatActivity() {
         iv_back.setOnClickListener(){
             finish();
         }
-
-        // btn_ajak_teman ketika diklik akan memanggil intent implisit untuk melakukan share link referal
-        // menggunakan ShareCompat.IntentBuilder
-        btn_ajak_teman.setOnClickListener(){
+        btn_ambil_kelas.setOnClickListener(){
             ShareCompat.IntentBuilder
                 .from(this)
                 .setType("text/plain")

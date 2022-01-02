@@ -11,7 +11,7 @@
         android:id="@+id/constraintLayout3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent">
+        tools:ignore="MissingConstraints">
 
         <Button
             android:id="@+id/btn_cancel"
@@ -34,7 +34,6 @@
             android:layout_marginStart="24dp"
             android:layout_marginLeft="24dp"
             android:layout_marginTop="24dp"
-            android:layout_marginBottom="24dp"
             android:background="@drawable/background_search"
             android:drawableLeft="@drawable/ic_searchbox"
             android:drawablePadding="12dp"
@@ -48,7 +47,6 @@
             android:paddingBottom="10dp"
             android:textAllCaps="false"
             android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btn_cancel"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -61,5 +59,83 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
+
     </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/poppins_medium"
+            android:text="@string/kategori"
+            android:textColor="@color/colorPurpleDark" />
+
+        <Button
+            style="?borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins"
+            android:gravity="left|center_vertical"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:text="Digital Marketing"
+            android:textAllCaps="false"
+            android:textColor="@color/colorPurpleBlack" />
+
+        <Button
+            style="?borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins"
+            android:gravity="left|center_vertical"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:text="Closing dan Penjualan"
+            android:textAllCaps="false"
+            android:textColor="@color/colorPurpleBlack" />
+
+        <Button
+            style="?borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins"
+            android:gravity="left|center_vertical"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:text="Model Bisnis"
+            android:textAllCaps="false"
+            android:textColor="@color/colorPurpleBlack" />
+
+        <Button
+            style="?borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins"
+            android:gravity="left|center_vertical"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:text="Keahlian lainnya..."
+            android:textAllCaps="false"
+            android:textColor="@color/colorPurpleBlack" />
+
+
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

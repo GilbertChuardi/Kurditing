@@ -72,33 +72,29 @@ class CourseFragment : Fragment() {
         getData()
     }
 
-    // fungsi getData pada CourseFragment untuk mengambil Course dari Firebase
     private fun getData() {
-        // addValueEventListener pada instance database untuk melakukan fetch data firebase, kemudian
-        // disimpan dalam dataList
         database.addValueEventListener(object : ValueEventListener {
-            // method OnChange untuk mengambil data waktu pertama kali load serta ketika ada perubahan
-            // data pada path database
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
                 dataList.clear()
                 for (getdataSnapshot in dataSnapshot.children) {
                     val course = getdataSnapshot.getValue(Course::class.java)
+//                    val ok = getdataSnapshot.child("members").child(uid).value == true
+//                    val cid = getdataSnapshot.key
+//                    val course =
+//                    if (ok) {
+//                        dataList.add(course!!)
+//                    }
                     dataList.add(course!!)
                 }
 
-                // tampilkan kursus yang telah ditampung dalam dataList pada recyclerview menggunakan CourseAdapter
-                // telah dibuat disertai dengan sebuah event listener yang nantinya akan diset sebagai
-                // onclicklistener pada setiap kursus untuk membuka deskripsi kursus
                 rv_my_course.adapter = CourseAdapter(dataList) {
-                    // penggunaan intent eksplisit untuk mengirimkan objek Course ke MyCourseDescriptionActivity
                     val intent = Intent(context,
                         MyCourseDescriptionActivity::class.java).putExtra("data", it)
                     startActivity(intent)
                 }
             }
 
-            // method onCancelled untuk menampilkan Toast berisi pesan error ketika gagal mengambil data
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(context, ""+error.message, Toast.LENGTH_LONG).show()
             }

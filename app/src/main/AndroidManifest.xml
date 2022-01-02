@@ -16,42 +16,61 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Kurditing.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".VideoPlayingActivity" android:configChanges="orientation|screenSize"></activity>
+        <!--
+            1. inisialisasi nama service
+            2. memberi izin pada service
+            3. broadcast receiver dapat menerima event dari aplikasi sendiri atau aplikasi lain
+            4. menghentikan service jika aplikasi didestroy
+        -->
+        <service
+            android:name=".MyService"
+            android:enabled="true"
+            android:exported="true"
+            android:stopWithTask="true" />
+
+        <activity
+            android:name=".VideoPlayingActivity"
+            android:configChanges="orientation|screenSize" />
         <activity android:name=".mycourse.MyCourseDescriptionActivity" />
         <activity android:name=".MyCourseActivity">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity android:name=".SignInActivity">
-<!--             <intent-filter>-->
-<!--                 <action android:name="android.intent.action.MAIN" />-->
-<!--                 <category android:name="android.intent.category.LAUNCHER" />-->
-<!--             </intent-filter>-->
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
-        <activity android:name=".SignUpActivity"/>
-<!--        <activity android:name=".SignUpActivity" android:windowSoftInputMode="stateHidden|adjustResize"/>-->
+        <activity android:name=".SignUpActivity" /> <!-- <activity android:name=".SignUpActivity" android:windowSoftInputMode="stateHidden|adjustResize"/> -->
         <activity android:name=".account.AccountActivity" />
         <activity android:name=".DescriptionActivity" />
-        <activity android:name=".home.HomeActivity" android:windowSoftInputMode="adjustPan">
+        <activity
+            android:name=".home.HomeActivity"
+            android:windowSoftInputMode="adjustPan">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+        </activity>
+        <activity android:name=".SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SplashScreenActivity">
-
-<!--             <intent-filter>-->
-<!--             <action android:name="android.intent.action.MAIN" />-->
-<!--             <category android:name="android.intent.category.LAUNCHER" />-->
-<!--             </intent-filter>-->
-        </activity>
-        <activity android:name=".account.TermsActivity"/>
-        <activity android:name=".account.AboutActivity"/>
-        <activity android:name=".account.ReferalActivity"/>
-        <activity android:name=".PaymentActivity"/>
+        <activity android:name=".account.TermsActivity" />
+        <activity android:name=".account.AboutActivity" />
+        <activity android:name=".account.ReferalActivity" />
+        <activity android:name=".PaymentActivity" />
     </application>
 
 </manifest>

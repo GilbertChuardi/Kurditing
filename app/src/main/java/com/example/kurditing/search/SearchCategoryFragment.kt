@@ -47,25 +47,15 @@ class SearchCategoryFragment : Fragment() {
 
 //        parFragment?.et_search?.setText("Hello")
 
-//        val searchResultFragment = SearchResultFragment()
-//        var bundle = Bundle()
-
         btn_dm.setOnClickListener {
-//            bundle.putString("SEARCH_TERM", btn_dm.text.toString())
-//            searchResultFragment.arguments = bundle
             etSearch?.setText(btn_dm.text.toString())
         }
         btn_cp.setOnClickListener {
             etSearch?.setText(btn_cp.text.toString())
-//            bundle.putString("SEARCH_TERM", btn_cp.text.toString())
         }
         btn_mb.setOnClickListener {
             etSearch?.setText(btn_mb.text.toString())
-//            bundle.putString("SEARCH_TERM", btn_mb.text.toString())
         }
-
-//        searchResultFragment.arguments = bundle
-
         btn_lainnya.setOnClickListener {
 
         }

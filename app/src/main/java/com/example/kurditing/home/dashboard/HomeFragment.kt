@@ -16,7 +16,6 @@ import com.example.kurditing.model.Course
 import com.example.kurditing.utils.Preferences
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.coroutines.delay
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -87,24 +86,7 @@ class HomeFragment : Fragment() {
         rv_popular.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         rv_continue_watching.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
-        // Proses back-end menggunakan Worker Thread dimana untuk membuat thread baru yang terpisah dari main Thread
-        // Thread diberi sebuah objek Runnable sehingga proses di dalam Thread dapat berjalan
-        Thread(Runnable {
-            // pemberian Thread.sleep selama 3 detik hanya untuk tujuan demonstrasi agar proses loading pada thread terlihat
-            // karena tanpa Thread.sleep, pergantian teks dari "Loading..." ke "Data Loaded" tidak begitu terlihat
-//            Thread.sleep(3000)
-            // fungsi getData() digunakan untuk melakukan fetch data dari Firebase untuk menampilkan kursus pada recycler view
-            getData()
-            // penggunaan perintah post untuk mengupdate tampilan text view tv_loading karena perubahan pada tampilan UI tidak
-            // boleh dilakukan secara asynchronous
-            tv_loading.post {
-                // ubah teks pada tv_loading menjadi "Data Loaded!"
-                tv_loading.text = "Data Loaded!"
-            }
-        }).start()
-        // perintah start untuk menjalankan Thread
-
-//        getData()
+        getData()
 
         var minHeight1 = 0
         var minHeight2 = 0

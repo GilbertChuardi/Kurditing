@@ -24,10 +24,6 @@ class MyCourseDescriptionActivity : AppCompatActivity() {
     private lateinit var database: DatabaseReference
     private var dataList = ArrayList<Course>()
 
-    // pada MyCourseDescriptionActivity kita terima objek yang telah dikirim sebelumnya ketika kita
-    // klik pada kursus dalam recyclerview menggunakan sintaks getParcelableExtra<Course>.
-    // Kemudian dari data kursus yang telah dipilih akan ditampilkan atribut-atribut kursus untuk menampilkan
-    // deskripsi dari kursus tersebut
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_course_description)
@@ -35,6 +31,7 @@ class MyCourseDescriptionActivity : AppCompatActivity() {
         val data = intent.getParcelableExtra<Course>("data")
 
         database = FirebaseDatabase.getInstance().getReference("Course").child(data?.judul!!).child("list")
+//                .child(data?.judul.toString())
 
         tv_title.text = data?.judul
         tv_desc.text = data?.desc
@@ -43,7 +40,6 @@ class MyCourseDescriptionActivity : AppCompatActivity() {
                 .load(data?.poster)
                 .into(iv_poster)
 
-        // untuk menampilkan list video dari kursus
         rv_daftar_video.layoutManager = LinearLayoutManager(this)
 
         getData()
