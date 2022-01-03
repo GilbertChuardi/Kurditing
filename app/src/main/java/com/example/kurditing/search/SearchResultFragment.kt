@@ -98,9 +98,7 @@ class SearchResultFragment : Fragment() {
                     startActivity(intent)
                 }
 
-                if(activity != null) {
-                    rv_search_result.adapter = adapter
-                }
+                rv_search_result.adapter = adapter
 //                adapter.filter()
             }
 

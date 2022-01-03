@@ -25,8 +25,7 @@ import kotlinx.android.synthetic.main.fragment_search_result.*
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
-//inisialisasi key
-//private const val EXTRA_MESSAGE = "EXTRA_MESSAGE"
+
 /**
  * A simple [Fragment] subclass.
  * Use the [SearchFragment.newInstance] factory method to
@@ -53,23 +52,12 @@ class SearchFragment : Fragment() {
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-
-
-
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_search, container, false)
-
-
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-//        //mengecek apakah ada savedInstanceState atau tidak
-//        if(savedInstanceState!=null){
-//            //mengambil data yang tersimpan menggunakan key
-//            tv_tes.text=savedInstanceState.getString(EXTRA_MESSAGE)
-//        }
 
         database = FirebaseDatabase.getInstance().getReference("Course")
         getData()
@@ -115,8 +103,6 @@ class SearchFragment : Fragment() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-
-
                 var ss = s!!.trim()
                 if (ss.isEmpty()) {
                     setFragment(fragmentSearchCategory)
@@ -254,12 +240,4 @@ class SearchFragment : Fragment() {
                 }
             }
     }
-
-    //berfungsi untuk menyimpan instance state dalam bundle
-//    override fun onSaveInstanceState(outState: Bundle) {
-//        super.onSaveInstanceState(outState)
-//        //menyimpan data dengan menggunakan key
-//        outState.putString(EXTRA_MESSAGE, tv_tes.text.toString())
-//    }
-
 }

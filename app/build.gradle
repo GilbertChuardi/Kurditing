@@ -47,6 +47,9 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.2.2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
+    //noinspection GradleCompatible
+    implementation 'com.android.support:design:26.1.0'
+
 
     implementation 'com.google.firebase:firebase-database:19.6.0'
     implementation 'com.google.firebase:firebase-auth:20.0.1'

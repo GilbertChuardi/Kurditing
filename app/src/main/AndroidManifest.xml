@@ -2,11 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.kurditing">
 
+    <!-- permission INTERNET diperlukan untuk melakukan request melalui internet -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- permission ACCESS_NETWORK_STATE digunakan untuk melakukan cek terhadap status koneksi internet -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <uses-permission-sdk-23 android:name="android.permission.INTERNET" />
     <uses-permission-sdk-23 android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission-sdk-23 android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -16,17 +19,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Kurditing.NoActionBar"
         android:usesCleartextTraffic="true">
-        <!--
-            1. inisialisasi nama service
-            2. memberi izin pada service
-            3. broadcast receiver dapat menerima event dari aplikasi sendiri atau aplikasi lain
-            4. menghentikan service jika aplikasi didestroy
-        -->
-        <service
-            android:name=".MyService"
+        <!-- pada MyNetworkReceiver set nilai atribut enabled ke true agar dapat digunakan dalam sistem, kemudian
+          atribut exported ke nilai true agar dapat menerima broadcast dari sumber di luar aplikasi -->
+        <receiver
+            android:name=".MyNetworkReceiver"
             android:enabled="true"
-            android:exported="true"
-            android:stopWithTask="true" />
+            android:exported="true">
+            <!-- pembuatan intent-filter dengan action android.net.conn.CONNECTIVITY_CHANGE untuk mendeteksi
+             perubahan status koneksi internet -->
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
 
         <activity
             android:name=".VideoPlayingActivity"
