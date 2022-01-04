@@ -16,6 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Kurditing.NoActionBar"
         android:usesCleartextTraffic="true">
+        <activity android:name=".JokeActivity"></activity>
         <!--
             1. inisialisasi nama service
             2. memberi izin pada service
@@ -26,10 +27,14 @@
             android:name=".MyService"
             android:enabled="true"
             android:exported="true"
-            android:stopWithTask="true" />
+            android:stopWithTask="true" /> <!-- daftarkan MyReceiver pada AndroidManifest.xml -->
+        <receiver android:name=".MyReceiver" />
 
-        <!-- daftarkan MyReceiver pada AndroidManifest.xml -->
-        <receiver android:name=".MyReceiver"/>
+        <service
+            android:name=".MyJobService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <activity
             android:name=".VideoPlayingActivity"
@@ -55,20 +60,20 @@
         <activity
             android:name=".home.HomeActivity"
             android:windowSoftInputMode="adjustPan">
-
-<!--             <intent-filter>-->
-<!--             <action android:name="android.intent.action.MAIN" />-->
-
-
-<!--             <category android:name="android.intent.category.LAUNCHER" />-->
-<!--             </intent-filter>-->
-        </activity>
-        <activity android:name=".SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".SplashScreenActivity">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity android:name=".account.TermsActivity" />
         <activity android:name=".account.AboutActivity" />
