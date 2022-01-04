@@ -1,38 +1,37 @@
 package com.example.kurditing.home
 
-import android.content.IntentFilter
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.graphics.Color
-import android.net.ConnectivityManager
+import android.media.AudioAttributes
+import android.media.RingtoneManager
+import android.os.Build
 import android.os.Bundle
-import android.os.Handler
+import android.view.View
+import android.widget.RemoteViews
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
-import com.example.kurditing.MyNetworkReceiver
 import com.example.kurditing.R
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_home.*
 
-// implement interface NetworkReceiverListener pada HomeActivity
-class HomeActivity : AppCompatActivity(), MyNetworkReceiver.NetworkReceiverListener {
-    // buat sebuah snackbar untuk memberi pesan jika tidak terkoneksi / sudah terkoneksi kembali
-    private var snackbar: Snackbar? = null
-    // variabel firstLaunch hanya untuk track apakah aplikasi pertama kali dijalankan atau tidak, bertujuan
-    // untuk mencegah munculnya snackbar yang menandakan koneksi kembali ketika awal aplikasi dijalankan
-    private var firstLaunch = true
+
+class HomeActivity : AppCompatActivity() {
+    // pada HomeActivity deklarasikan notificationManager dan inisialisasikan dengan nilai null
+    var notificationManager: NotificationManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        // laukan inisialisasi bottom navigation view bersasarkan view pada file xml (disini saya namakan id-nya bnv)
         val bnv = bnv
-        // pembuatan navController sebagai pengatur navigasi (disini R.id.fragment pada file xml merupakan
-        // sebuah NavHostFragment
         val navController = findNavController(R.id.fragment)
 
-        // lakukan set up NavController berdasarkan variabel navController yang telah dibuat untuk
-        // sinkronisasi antara bottomNavigationView dengan navController
         bnv.setupWithNavController(navController)
 
         var cek = intent.getStringExtra("course")
@@ -40,64 +39,84 @@ class HomeActivity : AppCompatActivity(), MyNetworkReceiver.NetworkReceiverListe
             navController.navigate(R.id.courseFragment)
         }
 
-        // assign nilai this pada companion object networkReceiverListener yang sebelumnya dibuat pada
-        // networkReceiverListener
-        MyNetworkReceiver.networkReceiverListener = this
-        // lakukan register receiver MyNetworkReceiver dengan IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
-        registerReceiver(MyNetworkReceiver(), IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+        // lakukan assignment pada notificationManager dengan notification system service
+        notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        // panggil fungsi untuk membuat notification channel
+        createNotificationChannels()
     }
 
-    // override method onNetworkConnectionChanged dengan parameter isConnected
-    override fun onNetworkConnectionChanged(isConnected: Boolean) {
-        // panggil fungsi showNetworkMessage dengan argumen isConnected
-        showNetworkMessage(isConnected)
-    }
-
-//    override fun onResume() {
-//        super.onResume()
-//        MyNetworkReceiver.networkReceiverListener = this
-//    }
-
-    // fungsi showNetworkMessage untuk menampilkan pesan Snackbar
-    fun showNetworkMessage(isConnected: Boolean) {
-        // jika tidak terkoneksi
-        if (!isConnected) {
-            // cek jika firstLaunch, maka set jadi false, kemudian tampilkan snackbar yang menandakan sedang offline
-            if (firstLaunch) firstLaunch = false
-            snackbar = Snackbar.make(
-                findViewById(R.id.root),
-                "You are offline",
-                Snackbar.LENGTH_INDEFINITE
-            )
-            snackbar?.view?.setBackgroundColor(Color.parseColor("#f44336"))
-            snackbar?.show()
-        } else {
-            // cek jika bukan firstLaunch, maka tampilkan snackbar yang menandakan koneksi telah terhubung kembali
-            if (firstLaunch) return
-            snackbar?.dismiss()
-            snackbar = Snackbar.make(
-                findViewById(R.id.root),
-                "We are back!",
-                Snackbar.LENGTH_SHORT
-            )
-            snackbar?.view?.setBackgroundColor(Color.parseColor("#4caf50"))
-            snackbar?.show()
-        }
-    }
-
-//    fun dialog(value: Boolean) {
-//        if (value) {
-//            tv_check_connection.setText("We are back !!!")
-//            tv_check_connection.setBackgroundColor(Color.GREEN)
-//            tv_check_connection.setTextColor(Color.WHITE)
-//            val handler = Handler()
-//            val delayrunnable = Runnable { tv_check_connection.setVisibility(View.GONE) }
-//            handler.postDelayed(delayrunnable, 3000)
-//        } else {
-//            tv_check_connection.setVisibility(View.VISIBLE)
-//            tv_check_connection.setText("Could not Connect to internet")
-//            tv_check_connection.setBackgroundColor(Color.RED)
-//            tv_check_connection.setTextColor(Color.WHITE)
+//    private fun createNotificationGroup() {
+//        // memastikan android adalah android Oreo dan mendaftarkan
+//        // 2 grup berbeda untuk notification
+//        // jika ada grup berbeda, anda dapat menambahkan list
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            val list = mutableListOf<NotificationChannelGroup>()
+//            list.add(NotificationChannelGroup(radioButton1.getText().toString(),
+//                    radioButton1.getText()))
+//            list.add(NotificationChannelGroup(radioButton2.getText().toString(),
+//                    radioButton2.getText()))
+//            notificationManager!!.createNotificationChannelGroups(list)
 //        }
 //    }
+
+//     fun showNotification() {
+//        val notification = NotificationCompat.Builder(this, "audio")
+//            .setContentTitle("test")
+//            .setContentText("Nice")
+//            .setSmallIcon(R.drawable.ic_kurditing)
+//            .addAction(R.drawable.ic_pause, "Pause", null)
+//            .build()
+//        notificationManager!!.notify(1, notification)
+//    }
+
+    // fungsi untuk membuat notification channel
+    private fun createNotificationChannels() {
+        // lakukan pengecekan agar hanya dijalankan ketika versi SDK_INT hanya berjalan pada Android 8.0 (API level 26)
+        // atau di atasnya
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // buat suara untuk notification menggunakan class RingtoneManager
+            val notificationSound = RingtoneManager
+                    .getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+            // variable att untuk menampung AudioAttributes untuk menandakan bahwa diterapkan pada notification
+            val att = AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                    .build()
+
+            // inisialisasi channel notification untuk audio
+            val audioChannel = NotificationChannel(
+                "audio",
+                "Audio Playback",
+                NotificationManager.IMPORTANCE_HIGH
+            )
+            // pengisian nilai atribut description, vibrationPattern (getaran), setSound, lightColor
+            // serta enable Light dan juga Vibration
+            audioChannel.description = "Notification Channel for Audio Playback"
+            audioChannel.vibrationPattern = longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 100)
+            audioChannel.setSound(notificationSound, att)
+            audioChannel.lightColor = Color.RED
+            audioChannel.enableLights(true)
+            audioChannel.enableVibration(true)
+            // untuk enable dot (badge) pada notification
+            audioChannel.setShowBadge(true)
+
+            // inisialisasi channel notification untuk video
+            val videoChannel = NotificationChannel(
+                "video",
+                "Video Playback",
+                NotificationManager.IMPORTANCE_HIGH
+            )
+            // pengisian nilai atribut description, vibrationPattern (getaran), setSound, lightColor
+            // serta enable Light dan juga Vibration
+            videoChannel.description = "Notification Channel for Video Playback"
+            videoChannel.vibrationPattern = longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 100)
+            videoChannel.setSound(notificationSound, att)
+            videoChannel.lightColor = Color.RED
+            videoChannel.enableLights(true)
+            videoChannel.enableVibration(true)
+
+            // buat dan daftarkan audioChannel beserta videoChannel menggunakan notificationManager
+            notificationManager?.createNotificationChannel(audioChannel)
+            notificationManager?.createNotificationChannel(videoChannel)
+        }
+    }
 }

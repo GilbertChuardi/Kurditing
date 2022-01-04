@@ -11,7 +11,9 @@
         android:layout_height="0dp"
         android:fillViewport="true"
         app:layout_constraintBottom_toTopOf="@id/linearLayout"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout_editor_absoluteX="0dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -22,9 +24,9 @@
                 android:id="@+id/constraintLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                tools:ignore="MissingConstraints"
                 tools:layout_editor_absoluteX="-29dp"
-                tools:layout_editor_absoluteY="0dp"
-                tools:ignore="MissingConstraints">
+                tools:layout_editor_absoluteY="0dp">
 
                 <ImageView
                     android:id="@+id/iv_poster"
@@ -41,10 +43,10 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="24dp"
+                    android:onClick="backHome"
                     app:layout_constraintStart_toStartOf="@+id/iv_poster"
                     app:layout_constraintTop_toTopOf="@+id/iv_poster"
-                    app:srcCompat="@drawable/ic_arrow_white"
-                    android:onClick="backHome"/>
+                    app:srcCompat="@drawable/ic_arrow_white" />
 
                 <TextView
                     android:id="@+id/tv_owner_poster"
@@ -81,12 +83,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:fontFamily="@font/poppins_medium"
                 android:textColor="@color/colorPurpleBlack"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+                app:layout_constraintTop_toBottomOf="@+id/btnVideo"
                 tools:text="Trik Melesatkan Omset" />
 
             <TextView
@@ -99,9 +101,9 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
                 android:fontFamily="@font/poppins"
+                android:justificationMode="inter_word"
                 android:textColor="@color/colorPurpleBlack"
                 android:textSize="13sp"
-                android:justificationMode="inter_word"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_title"
@@ -190,6 +192,49 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_harga"
                 app:srcCompat="@drawable/ic_star_svg" />
 
+            <Button
+                android:id="@+id/btnVideo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="96dp"
+                android:layout_marginLeft="96dp"
+                android:layout_marginTop="8dp"
+                android:text="VIDEO"
+                app:backgroundTint="@color/colorGrey"
+                app:cornerRadius="30dp"
+                app:icon="@drawable/ic_video_camera"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+
+            <Button
+                android:id="@+id/btnAudio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:text="AUDIO"
+                app:backgroundTint="@color/colorGrey"
+                app:cornerRadius="30dp"
+                app:icon="@drawable/ic_headphones"
+                app:layout_constraintStart_toEndOf="@+id/btnVideo"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+
+            <Button
+                android:id="@+id/btnAudioStop"
+                android:layout_width="51dp"
+                android:layout_height="51dp"
+                android:layout_marginStart="120dp"
+                android:layout_marginLeft="120dp"
+                android:layout_marginTop="8dp"
+                android:text="AUDIO"
+                android:visibility="invisible"
+                app:backgroundTint="@color/colorGrey"
+                app:cornerRadius="30dp"
+                app:icon="@drawable/ic_stop_play"
+                app:layout_constraintStart_toEndOf="@+id/btnVideo"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 
@@ -204,7 +249,7 @@
         <View
             android:id="@+id/divider7"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="2dp"
             android:background="?android:attr/listDivider" />
 
         <Button
@@ -224,22 +269,6 @@
             android:textStyle="bold"
             app:backgroundTint="@null"/>
 
-        <Button
-            android:id="@+id/btn_nonton_cuplikan"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/ic_border_purple"
-            android:fontFamily="@font/poppins_medium"
-            android:text="Nonton Cuplikan"
-            android:textAllCaps="false"
-            android:textColor="@color/colorPurpleButton"
-            android:textStyle="bold"
-            app:backgroundTint="@null" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
