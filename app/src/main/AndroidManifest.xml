@@ -8,6 +8,10 @@
     <uses-permission-sdk-23 android:name="android.permission.INTERNET" />
     <uses-permission-sdk-23 android:name="android.permission.ACCESS_WIFI_STATE" />
 
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
+    <uses-permission-sdk-23 android:name="android.permission.READ_CONTACTS" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -16,7 +20,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Kurditing.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".JokeActivity"></activity>
+        <activity android:name=".ReferenceActivity"></activity>
+        <activity android:name=".JokeActivity" />
         <!--
             1. inisialisasi nama service
             2. memberi izin pada service
