@@ -4,9 +4,13 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- permission untuk read contact-->
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
 
     <uses-permission-sdk-23 android:name="android.permission.INTERNET" />
     <uses-permission-sdk-23 android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- permission untuk read contact-->
+    <uses-permission-sdk-23 android:name="android.permission.READ_CONTACTS" />
 
     <application
         android:allowBackup="true"
@@ -16,6 +20,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Kurditing.NoActionBar"
         android:usesCleartextTraffic="true">
+        <!--
+            1. inisialisasi nama receiver
+            2. memberi izin pada receiver
+            3. broadcast receiver dapat menerima event dari aplikasi sendiri atau aplikasi lain
+        -->
+        <receiver
+            android:name=".MyAlarmReceiver"
+            android:enabled="true"
+            android:exported="true"></receiver>
         <!--
             1. inisialisasi nama service
             2. memberi izin pada service
@@ -27,9 +40,6 @@
             android:enabled="true"
             android:exported="true"
             android:stopWithTask="true" />
-
-        <!-- daftarkan MyReceiver pada AndroidManifest.xml -->
-        <receiver android:name=".MyReceiver"/>
 
         <activity
             android:name=".VideoPlayingActivity"
@@ -56,12 +66,12 @@
             android:name=".home.HomeActivity"
             android:windowSoftInputMode="adjustPan">
 
-<!--             <intent-filter>-->
-<!--             <action android:name="android.intent.action.MAIN" />-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
 
 
-<!--             <category android:name="android.intent.category.LAUNCHER" />-->
-<!--             </intent-filter>-->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity android:name=".SplashScreenActivity">
             <intent-filter>

@@ -126,12 +126,12 @@ class HomeFragment : Fragment() {
                     dataList.add(course!!)
                 }
 
-                rv_best_seller.adapter = BestSellerAdapter(dataList){
+                rv_best_seller?.adapter = BestSellerAdapter(dataList){
                     var intent = Intent(context, DescriptionActivity::class.java).putExtra("data",it)
                     startActivity(intent)
                 }
 
-                rv_popular.adapter = PopularAdapter(dataList){
+                rv_popular?.adapter = PopularAdapter(dataList){
                     var intent = Intent(context, DescriptionActivity::class.java).putExtra("data",it)
                     startActivity(intent)
                 }

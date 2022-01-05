@@ -34,7 +34,6 @@
             android:layout_marginStart="24dp"
             android:layout_marginLeft="24dp"
             android:layout_marginTop="24dp"
-            android:layout_marginBottom="24dp"
             android:background="@drawable/background_search"
             android:drawableLeft="@drawable/ic_searchbox"
             android:drawablePadding="12dp"
@@ -48,7 +47,6 @@
             android:paddingBottom="10dp"
             android:textAllCaps="false"
             android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btn_cancel"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

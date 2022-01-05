@@ -17,4 +17,8 @@
     <string name="kategori">KATEGORI</string>
     <string name="syarat_ketentuan"><![CDATA[Syarat & Ketentuan]]></string>
     <string name="tentang_kurditing">Tentang Kurditing</string>
+
+    <!--Contact-->
+    <string name="name">Name</string>
+    <string name="phone_number">Phone Number</string>
 </resources>
