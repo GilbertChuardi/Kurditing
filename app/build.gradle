@@ -63,4 +63,6 @@ dependencies {
 
     // FirebaseUI for Firebase Realtime Database
     implementation 'com.firebaseui:firebase-ui-database:7.1.1'
+
+    implementation 'com.loopj.android:android-async-http:1.4.11'
 }
