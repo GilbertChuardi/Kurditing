@@ -48,9 +48,13 @@ class SignUpActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
 
+        // inisialisasi DatabaseReference
         database = FirebaseDatabase.getInstance().reference
+        // inisialisasi instance dari FirebaseAuth
         auth = FirebaseAuth.getInstance()
 
+        // inisialisasi preferences dengna instance dari class Preferences dengan passing argumen
+        // context
         preferences = Preferences(this)
 
         setSpanText()
@@ -83,24 +87,35 @@ class SignUpActivity : AppCompatActivity() {
                 et_confirm_password.requestFocus()
             }
             else {
+                // lakukan pembuatan user menggunakan email dan password, kemudian attach onCompleteListener
                 auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, OnCompleteListener { task ->
+                    // jika task berhasil
                     if (task.isSuccessful) {
+                        // tampilkan Toast dengan pesan sukses melakukan registrasi
                         Toast.makeText(this, "Successfully Registered", Toast.LENGTH_LONG).show()
 
+                        // kemudian panggil metode onAuthSuccess dengan argumen user dari result
+                        // pembuatan user, dimana berfungsi untuk menuliskan data user pada
+                        // reference database firebase
                         onAuthSuccess(task.result?.user)
 
+                        // deklarasi variabel user
                         var user: User?
+                        // tampung id user yang telah dibuat pada variabel uid
                         val uid = auth.currentUser!!.uid
 
-//                        Toast.makeText(this, "UID: " + uid, Toast.LENGTH_LONG).show()
-
+                        // tampung reference user pada variabel uidRef
                         val uidRef = database.child("user").child(uid)
+                        // buat sebuah objek ValueEventListener
                         val valueEventListener = object : ValueEventListener {
+                            // method onDataChange akan dijalankan pada saat pertama kali, disertai
+                            // ketika terjadi perubahan pada reference
                             override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                // tampung nilai user pada variabel user
                                 user = dataSnapshot.getValue(User::class.java)
 
-//                                Toast.makeText(this@SignUpActivity, "Nama IN: " + user?.nama.toString(), Toast.LENGTH_LONG).show()
-
+                                // lakukan setValues pada preferences dengan nilai yang telah diinput
+                                // oleh user
                                 preferences.setValues("uid", user?.uid.toString())
                                 preferences.setValues("nama", user?.nama.toString())
                                 preferences.setValues("email", user?.email.toString())
@@ -108,23 +123,25 @@ class SignUpActivity : AppCompatActivity() {
                                 preferences.setValues("saldo", user?.saldo.toString())
                                 preferences.setValues("status", "1")
 
+                                // panggil method finishAffinity() untuk melakukan finish pada
+                                // activity ini dan activity sebelumnya pada stack
                                 finishAffinity()
 
+                                // buat intent untuk menuju HomeActivity
                                 val intent = Intent(this@SignUpActivity, HomeActivity::class.java)
+                                // lakukan startActivity
                                 startActivity(intent)
                             }
 
+                            // method onCancelled dijalankan ketika terjadi error
                             override fun onCancelled(databaseError: DatabaseError) {
                                 Log.d(TAG, databaseError.message)
                             }
                         }
+                        // attach valueEventListener yang telah dibuat pada uidRef
                         uidRef.addValueEventListener(valueEventListener)
-
-//                        Toast.makeText(this, "Nama: " + user?.nama.toString(), Toast.LENGTH_LONG).show()
-
-
-//                        finish()
                     } else {
+                        // tampilkan Toast dengan pesan registrasi gagal jika task gagal
                         Toast.makeText(this, "Registration Failed: " + (task.exception?.message
                                 ?: "NULL"), Toast.LENGTH_LONG).show()
                     }
