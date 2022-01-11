@@ -64,6 +64,11 @@ class AccountFragment : Fragment() {
             startActivity(intent)
         }
 
+        btn_historyTrans.setOnClickListener{
+            var intent = Intent(context, HistoryTransActivity::class.java)
+            startActivity(intent)
+        }
+
         btn_logout.setOnClickListener(){
             var MyLayout = layoutInflater.inflate(R.layout.activity_logout_dialog,null)
             val myDialogBuilder = context?.let { it1 ->
