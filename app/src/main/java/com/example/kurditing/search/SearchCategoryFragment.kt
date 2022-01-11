@@ -77,7 +77,7 @@ class SearchCategoryFragment : Fragment() {
             // inisialisasi alarm
             var alarmTimer = Calendar.getInstance()
             // mensetting waktu untuk alarm
-            alarmTimer.add(Calendar.SECOND, 5)
+            alarmTimer.add(Calendar.SECOND, 15)
 
             // inisialisasi intent
             var sendIntent = Intent(activity, MyAlarmReceiver::class.java)

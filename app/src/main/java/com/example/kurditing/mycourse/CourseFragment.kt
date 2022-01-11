@@ -67,7 +67,7 @@ class CourseFragment : Fragment() {
 //            .apply(RequestOptions.circleCropTransform())
 //            .into(iv_poster)
 
-        rv_my_course.layoutManager = LinearLayoutManager(context)
+        rv_my_course?.layoutManager = LinearLayoutManager(context)
 
         getData()
     }
@@ -88,7 +88,7 @@ class CourseFragment : Fragment() {
                     dataList.add(course!!)
                 }
 
-                rv_my_course.adapter = CourseAdapter(dataList) {
+                rv_my_course?.adapter = CourseAdapter(dataList) {
                     val intent = Intent(context,
                         MyCourseDescriptionActivity::class.java).putExtra("data", it)
                     startActivity(intent)
