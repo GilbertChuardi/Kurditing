@@ -64,6 +64,11 @@ class AccountFragment : Fragment() {
             startActivity(intent)
         }
 
+        btn_historyTrans.setOnClickListener{
+            var intent = Intent(context, HistoryTransActivity::class.java)
+            startActivity(intent)
+        }
+
         btn_logout.setOnClickListener(){
             var MyLayout = layoutInflater.inflate(R.layout.activity_logout_dialog,null)
             val myDialogBuilder = context?.let { it1 ->
@@ -94,11 +99,6 @@ class AccountFragment : Fragment() {
                 .load("https://firebasestorage.googleapis.com/v0/b/kurditing.appspot.com/o/images%2Fpejabat.jpg?alt=media&token=f00e8397-049f-4c86-89d3-279a245c8b8e")
                 .apply(RequestOptions.circleCropTransform())
                 .into(iv_photo)
-
-        btn_undi.setOnClickListener {
-            val intent = Intent(context, ReferenceActivity::class.java)
-            startActivity(intent)
-        }
     }
 
     override fun onCreateView(

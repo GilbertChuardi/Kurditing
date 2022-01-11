@@ -1,14 +1,25 @@
-package com.example.kurditing.search
+    package com.example.kurditing.search
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
+import android.hardware.SensorManager
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
+import android.widget.Toast
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.fragment.app.Fragment
+import com.example.kurditing.DescriptionActivity
+import com.example.kurditing.EXTRA_PESAN
+import com.example.kurditing.MyAlarmReceiver
 import com.example.kurditing.R
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.fragment_search_category.*
+import java.util.*
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,6 +35,7 @@ class SearchCategoryFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    var mAlarmManager : AlarmManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,11 +56,37 @@ class SearchCategoryFragment : Fragment() {
 
         val parFragment = parentFragment
         var etSearch = parFragment?.et_search
+        // inisialisasi alarm manager
+        var mAlarmManager = requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
+        //inisialisasi pending intent
+        var mPendingIntent : PendingIntent? = null
 //        parFragment?.et_search?.setText("Hello")
 
         btn_dm.setOnClickListener {
+            // menampilkan isi text dri btn_dm kedalam searchbox
             etSearch?.setText(btn_dm.text.toString())
+            // mengecek apakah pending intent tidak null
+            if(mPendingIntent!=null){
+                // membatalkan alarm manager
+                mAlarmManager.cancel(mPendingIntent)
+                // membatalkan pending intent
+                mPendingIntent?.cancel()
+            }
+
+            // inisialisasi alarm
+            var alarmTimer = Calendar.getInstance()
+            // mensetting waktu untuk alarm
+            alarmTimer.add(Calendar.SECOND, 15)
+
+            // inisialisasi intent
+            var sendIntent = Intent(activity, MyAlarmReceiver::class.java)
+            // mengisi data kedalam intent
+            sendIntent?.putExtra(EXTRA_PESAN, "Kamu sedang mengexplore tentang "+btn_dm.text+"ya? Berikut rekomendasi dari kami.")
+            // untuk mengirim intent
+            mPendingIntent = PendingIntent.getBroadcast(context, 101,sendIntent,0)
+            // menset waktu untk=uk alarm manager
+            mAlarmManager?.set(AlarmManager.RTC, alarmTimer.timeInMillis, mPendingIntent)
         }
         btn_cp.setOnClickListener {
             etSearch?.setText(btn_cp.text.toString())

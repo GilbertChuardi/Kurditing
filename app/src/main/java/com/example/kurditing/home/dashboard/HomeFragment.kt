@@ -12,8 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kurditing.DescriptionActivity
 import com.example.kurditing.R
-import com.example.kurditing.home.HomeInterface
-import com.example.kurditing.home.HomePresenter
 import com.example.kurditing.model.Course
 import com.example.kurditing.utils.Preferences
 import com.google.firebase.database.*
@@ -30,14 +28,11 @@ private const val ARG_PARAM2 = "param2"
  * Use the [HomeFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+class HomeFragment : Fragment() {
 
-// implementasi HomeInterface pada HomeFragment
-class HomeFragment : Fragment(), HomeInterface {
-    // deklarasi variabel preferences dan mDatabase
     private lateinit var preferences: Preferences
     private lateinit var mDatabase : DatabaseReference
 
-    // deklarasi variabel dataList untuk menampung data kursus dari database
     private var dataList = ArrayList<Course>()
 
     // TODO: Rename and change types of parameters
@@ -81,25 +76,17 @@ class HomeFragment : Fragment(), HomeInterface {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        // ambil data preference dari context aplikasi
         preferences = Preferences(requireActivity().applicationContext)
-        // ambil reference dari FirebaseDatabase untuk keperluan fetching data
         mDatabase = FirebaseDatabase.getInstance().getReference("Course")
 
-        // set teks pada tv_nama sesuai dengan data nama pada preferences
+
         tv_nama.text = preferences.getValues("nama")
 
-        // lakukan assignment layout manager dari rcycler view
-        rv_best_seller.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        rv_best_seller?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         rv_popular.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         rv_continue_watching.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
-        // inisialisasi HomePresenter dengan argumen this beserta context
-        var presenter = HomePresenter(this, context)
-        // panggil method fetchBestSeller() yang ada pada HomePresenter
-        presenter.fetchBestSeller()
-        // panggil method fetchPopular() yang ada pada HomePresenter
-        presenter.fetchPopular()
+        getData()
 
         var minHeight1 = 0
         var minHeight2 = 0
@@ -139,15 +126,15 @@ class HomeFragment : Fragment(), HomeInterface {
                     dataList.add(course!!)
                 }
 
-//                rv_best_seller.adapter = BestSellerAdapter(dataList){
-//                    var intent = Intent(context, DescriptionActivity::class.java).putExtra("data",it)
-//                    startActivity(intent)
-//                }
+                rv_best_seller?.adapter = BestSellerAdapter(dataList){
+                    var intent = Intent(context, DescriptionActivity::class.java).putExtra("data",it)
+                    startActivity(intent)
+                }
 
-//                rv_popular.adapter = PopularAdapter(dataList){
-//                    var intent = Intent(context, DescriptionActivity::class.java).putExtra("data",it)
-//                    startActivity(intent)
-//                }
+                rv_popular?.adapter = PopularAdapter(dataList){
+                    var intent = Intent(context, DescriptionActivity::class.java).putExtra("data",it)
+                    startActivity(intent)
+                }
 //
 //                rv_continue_watching.adapter = ContinueWatchingAdapter(dataList){
 //
@@ -155,23 +142,5 @@ class HomeFragment : Fragment(), HomeInterface {
             }
 
         })
-    }
-
-    // method showBestSeller berfungsi untuk melakukan assignment terhadap adapter yang digunakan
-    // pada rv_best_seller beserta intent ketika melakukan klik pada item recycler view
-    override fun showBestSeller(model: ArrayList<Course>) {
-        rv_best_seller?.adapter = BestSellerAdapter(model){
-            var intent = Intent(context, DescriptionActivity::class.java).putExtra("data",it)
-            startActivity(intent)
-        }
-    }
-
-    // method showPopular berfungsi untuk melakukan assignment terhadap adapter yang digunakan
-    // pada rv_popular beserta intent ketika melakukan klik pada item recycler view
-    override fun showPopular(model: ArrayList<Course>) {
-        rv_popular?.adapter = PopularAdapter(model){
-            var intent = Intent(context, DescriptionActivity::class.java).putExtra("data",it)
-            startActivity(intent)
-        }
     }
 }

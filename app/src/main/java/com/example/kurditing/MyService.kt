@@ -1,36 +1,35 @@
 package com.example.kurditing
 
-import android.app.NotificationManager
 import android.app.Service
-import android.content.Context
 import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.IBinder
 import android.provider.Settings
-import android.view.View
 import android.widget.Toast
 import androidx.core.app.JobIntentService
-import androidx.core.app.NotificationManagerCompat
-import kotlinx.android.synthetic.main.activity_description.*
 
 // inisialisai konstanta
 const val ACTION_STOP = "stop"
 const val EXTRA_FINISH = "finish"
 
 class MyService : Service() {
+    //inisialisasi variabel mediaplayer
+    private lateinit var mediaPlayer:MediaPlayer
+
     // untuk menyediakan binding terhadap service
     override fun onBind(intent: Intent): IBinder ?= null
 
     // fungsi yang dijalankan saat service dijalankan
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        // lakukan assignment pada notificationManager dengan notification system service
-        notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        //inisialisasi audio
-        val audio = R.raw.audio
+        //inisialisasi link audio
+        val audioPath = "https://firebasestorage.googleapis.com/v0/b/kurditing.appspot.com/o/audio%2Fhow_to_figure_out_what_to_do_with_your_life_439104475844874328.mp3?alt=media&token=b9019f4a-6dc3-4cd3-bea6-c0d7eb35cb02"
 
-        // membuat sebuah media player untuk memutar audio
-        mediaPlayer = MediaPlayer.create(this, audio)
+        // mengubah link audio menjadi uri
+        val uri: Uri = Uri.parse(audioPath)
+
+        // membuat sebuah media player untuk memutar audio pada link
+        mediaPlayer = MediaPlayer.create(this, uri)
 
         // menjalankan fungsi ketika audio selesai
         mediaPlayer.setOnCompletionListener {
@@ -46,6 +45,8 @@ class MyService : Service() {
         mediaPlayer.start()
         // untuk membuat dan menjalankan kembali service setelah fungsi onStartCommand dijalankan dan service sudah dimatikan (kill).
 
+
+
         return START_STICKY
     }
 
@@ -55,18 +56,5 @@ class MyService : Service() {
         super.onDestroy()
         // menhentikan media player dan audio
         mediaPlayer.stop()
-    }
-
-    // companion object berfungsi untuk membuat properti static pada kotlin
-    companion object {
-        // deklarasi mediaPlayer serta notificationManager
-        lateinit var mediaPlayer: MediaPlayer
-        var notificationManager: NotificationManager? = null
-
-        // method stop() untuk menghentikan mediaPlayer serta menghapus notification dengan id 2
-        fun stop() {
-            mediaPlayer.stop()
-            notificationManager?.cancel(2)
-        }
     }
 }
