@@ -1,6 +1,5 @@
 package com.example.kurditing.account
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -10,13 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.Toast
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.room.Room
-import androidx.room.RoomDatabase
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.kurditing.*
@@ -24,7 +18,6 @@ import com.example.kurditing.utils.Preferences
 import kotlinx.android.synthetic.main.fragment_account.*
 import kotlinx.android.synthetic.main.fragment_account.tv_nama
 import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -43,27 +36,11 @@ class AccountFragment : Fragment() {
 
     private lateinit var preferences: Preferences
 
-    // deklarasi variabel db
-    private lateinit var db: MyDBRoomHelper
-    // deklarasi variabel startForResult sebagai pengganti fungsi startActivityForResult yang sudah
-    // deprecated
-    private lateinit var startForResult: ActivityResultLauncher<Intent>
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
-        }
-
-        // assign startForResult dengan kembalian dari pemanggilan registerForActivityResult
-        startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                result: ActivityResult ->
-            // jika result berhasil diterima, maka set nilai tv_nama dengan data result
-            if (result.resultCode == Activity.RESULT_OK) {
-                val intent = result.data?.getStringExtra("result")
-                tv_nama.text = intent.toString()
-            }
         }
     }
 
@@ -74,21 +51,19 @@ class AccountFragment : Fragment() {
 
 //        tv_nama.text = preferences.getValues("nama")
 
-        // assign nilai db dengan memanggil method getInstance dari MyDBRoomHelper
-        db = MyDBRoomHelper.getInstance(requireActivity().applicationContext)
 
-        // lakukan query getAllData secara asynchronous untuk set nilai tv_nama
-        // sebenarnya query getAllData tidak cocok untuk kasus ini, karena seharusnya hanya query
-        // satu user, query di bawah hanya demonstrasi saja
+
+
         doAsync {
+            var db= Room.databaseBuilder(
+                requireActivity().applicationContext,
+                MyDBRoomHelper::class.java,
+                "kurditing.db"
+            ).build()
+            
             db.usernameDAO().getAllData().forEach{
-                tv_nama.text = it.name
+                tv_nama.setText(it.name)
             }
-        }
-
-        // ketika tv_edit_profile diklik, lakukan launch intent ke EditProfileActivity
-        tv_edit_profile.setOnClickListener {
-            startForResult.launch(Intent(context, EditProfileActivity::class.java))
         }
 
         btn_referal.setOnClickListener(){
