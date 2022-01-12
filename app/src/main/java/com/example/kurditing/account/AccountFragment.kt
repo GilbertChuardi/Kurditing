@@ -2,6 +2,7 @@ package com.example.kurditing.account
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,12 +10,14 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
+import androidx.room.Room
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.kurditing.*
 import com.example.kurditing.utils.Preferences
 import kotlinx.android.synthetic.main.fragment_account.*
 import kotlinx.android.synthetic.main.fragment_account.tv_nama
+import org.jetbrains.anko.doAsync
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -39,7 +42,6 @@ class AccountFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -47,7 +49,22 @@ class AccountFragment : Fragment() {
 
         preferences = Preferences(requireActivity().applicationContext)
 
-        tv_nama.text = preferences.getValues("nama")
+//        tv_nama.text = preferences.getValues("nama")
+
+
+
+
+        doAsync {
+            var db= Room.databaseBuilder(
+                requireActivity().applicationContext,
+                MyDBRoomHelper::class.java,
+                "kurditing.db"
+            ).build()
+            
+            db.usernameDAO().getAllData().forEach{
+                tv_nama.setText(it.name)
+            }
+        }
 
         btn_referal.setOnClickListener(){
             var intent = Intent(context, ReferalActivity::class.java)
@@ -99,6 +116,11 @@ class AccountFragment : Fragment() {
                 .load("https://firebasestorage.googleapis.com/v0/b/kurditing.appspot.com/o/images%2Fpejabat.jpg?alt=media&token=f00e8397-049f-4c86-89d3-279a245c8b8e")
                 .apply(RequestOptions.circleCropTransform())
                 .into(iv_photo)
+
+        btn_undi.setOnClickListener {
+            val intent = Intent(context, ReferenceActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     override fun onCreateView(

@@ -4,15 +4,11 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.hardware.SensorManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
-import com.example.kurditing.DescriptionActivity
 import com.example.kurditing.EXTRA_PESAN
 import com.example.kurditing.MyAlarmReceiver
 import com.example.kurditing.R

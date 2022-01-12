@@ -10,7 +10,6 @@ import com.bumptech.glide.Glide
 import com.example.kurditing.R
 import com.example.kurditing.VideoPlayingActivity
 import com.example.kurditing.model.Course
-import com.example.kurditing.model.Detail
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_description.*
 import kotlinx.android.synthetic.main.activity_description.iv_poster

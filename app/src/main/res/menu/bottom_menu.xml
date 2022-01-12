@@ -14,6 +14,10 @@
         android:icon="@drawable/ic_kursus"
         android:title="Kursus Saya" />
     <item
+        android:id="@+id/funFragment"
+        android:icon="@drawable/ic_joke"
+        android:title="Lelucon" />
+    <item
         android:id="@+id/accountFragment"
         android:icon="@drawable/ic_akun"
         android:title="Akun" />

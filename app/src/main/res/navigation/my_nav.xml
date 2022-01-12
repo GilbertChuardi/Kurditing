@@ -25,4 +25,9 @@
         android:name="com.example.kurditing.account.AccountFragment"
         android:label="fragment_account"
         tools:layout="@layout/fragment_account" />
+    <fragment
+        android:id="@+id/funFragment"
+        android:name="com.example.kurditing.funFragment"
+        android:label="fragment_fun"
+        tools:layout="@layout/fragment_fun" />
 </navigation>

@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.kurditing">
-
+    <permission android:name="com.example.kurditing.provider.READ_URI_DB"
+        android:protectionLevel="normal"/>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <uses-permission-sdk-23 android:name="android.permission.INTERNET" />
     <uses-permission-sdk-23 android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
+    <uses-permission-sdk-23 android:name="android.permission.READ_CONTACTS" />
 
     <application
         android:allowBackup="true"
@@ -16,6 +21,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Kurditing.NoActionBar"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".account.EditProfileActivity"
+            android:label="@string/title_activity_edit_profile"
+            android:theme="@style/Theme.Kurditing.NoActionBar.NoActionBar"></activity>
+        <activity android:name=".ReferenceActivity" />
+        <activity android:name=".JokeActivity" />
         <!--
             1. inisialisasi nama receiver
             2. memberi izin pada receiver
@@ -24,7 +35,7 @@
         <receiver
             android:name=".MyAlarmReceiver"
             android:enabled="true"
-            android:exported="true"></receiver>
+            android:exported="true" />
         <!--
             1. inisialisasi nama service
             2. memberi izin pada service
@@ -35,7 +46,14 @@
             android:name=".MyService"
             android:enabled="true"
             android:exported="true"
-            android:stopWithTask="true" />
+            android:stopWithTask="true" /> <!-- daftarkan MyReceiver pada AndroidManifest.xml -->
+        <receiver android:name=".MyReceiver" />
+
+        <service
+            android:name=".MyJobService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <activity
             android:name=".VideoPlayingActivity"
@@ -57,30 +75,37 @@
         </activity>
         <activity android:name=".SignUpActivity" /> <!-- <activity android:name=".SignUpActivity" android:windowSoftInputMode="stateHidden|adjustResize"/> -->
         <activity android:name=".account.AccountActivity" />
-        <activity android:name=".DescriptionActivity" />
+        <activity android:name=".description.DescriptionActivity" />
         <activity
             android:name=".home.HomeActivity"
             android:windowSoftInputMode="adjustPan">
 
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
+             <intent-filter>
+             <action android:name="android.intent.action.MAIN" />
 
 
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
+             <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
         </activity>
         <activity android:name=".SplashScreenActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
         </activity>
         <activity android:name=".account.TermsActivity" />
         <activity android:name=".account.HistoryTransActivity" />
         <activity android:name=".account.AboutActivity" />
         <activity android:name=".account.ReferalActivity" />
         <activity android:name=".PaymentActivity" />
+        <provider
+            android:authorities="com.example.kurditing.provider.provider.myContentProvider"
+            android:name=".provider.MyContentProvider"
+            android:enabled="true"
+            android:exported="true"
+            android:readPermission="com.example.kurditing.provider.READ_URI_DB"
+            android:grantUriPermissions="true"/>
     </application>
 
 </manifest>
