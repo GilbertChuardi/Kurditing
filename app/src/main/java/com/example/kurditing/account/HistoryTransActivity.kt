@@ -6,9 +6,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
-import com.example.kurditing.Comment
 import com.example.kurditing.R
-import com.example.kurditing.myDBHelper
 import kotlinx.android.synthetic.main.activity_history_trans.*
 import kotlinx.android.synthetic.main.activity_payment.*
 import kotlinx.android.synthetic.main.fragment_account.*
@@ -21,11 +19,10 @@ import java.lang.String
 import kotlin.random.Random
 
 class HistoryTransActivity : AppCompatActivity() {
-    var mySQLitedb : myDBHelper? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_history_trans)
-        mySQLitedb = myDBHelper(this)
+
         // Melakukan build Room database
         var db= Room.databaseBuilder(
             this,
@@ -36,24 +33,14 @@ class HistoryTransActivity : AppCompatActivity() {
         btn_simpan_trans.setOnClickListener{
             // menjalankan fungsi writeFileInternal saat tombol btn_simpan_trans diklik
 //            writeFileInternal();
-//            doAsync {
-//                var historyTmp = UserName(123)
-//                historyTmp.name = "Wilson Angga"
-//                db.usernameDAO().insertAll(historyTmp)
-//                uiThread {
-//                    Log.w("Hasil DB", "berhasil")
-//                }
-//            }
-            var userTmp = Comment()
-            userTmp.username = "Wilson"
-            userTmp.comment = "Hi ini course bagus"
-            var result = mySQLitedb?.addComment(userTmp)
-            if(result != -1L){
-                Toast.makeText(this, "Berhasil", Toast.LENGTH_SHORT).show()
-            }else{
-                Toast.makeText(this, "Gagal", Toast.LENGTH_SHORT).show()
+            doAsync {
+                var historyTmp = UserName(123)
+                historyTmp.name = "Wilson Angga"
+                db.usernameDAO().insertAll(historyTmp)
+                uiThread {
+                    Log.w("Hasil DB", "berhasil")
+                }
             }
-
         }
         // menjalankan fungsi readFileInternal saat tombol btn_lihat_trans diklik
 //            readFileInternal();

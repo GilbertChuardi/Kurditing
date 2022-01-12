@@ -1,0 +1,34 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:padding="@dimen/widget_margin"
+    android:orientation="vertical"
+    android:theme="@style/ThemeOverlay.Kurditing.AppWidgetContainer">
+
+    <TextView
+        android:id="@+id/appwidget_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="8dp"
+        android:background="@color/white"
+        android:contentDescription="@string/best_seller_course"
+        android:fontFamily="@font/poppins"
+        android:text="@string/best_seller_course"
+        android:textColor="@color/colorPurpleDark"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <ListView
+        android:id="@+id/lv_best_seller"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </ListView>
+    <TextView android:id="@+id/empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Kosong" />
+</LinearLayout>

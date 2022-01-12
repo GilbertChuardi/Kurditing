@@ -9,14 +9,20 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.kurditing.description.DescriptionActivity
 import com.example.kurditing.R
+import com.example.kurditing.description.DescriptionActivity
 import com.example.kurditing.home.HomeInterface
 import com.example.kurditing.home.HomePresenter
+import com.example.kurditing.model.Comment
 import com.example.kurditing.model.Course
+import com.example.kurditing.myDBHelper
 import com.example.kurditing.utils.Preferences
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.fragment_home.*
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -35,6 +41,11 @@ class HomeFragment : Fragment(), HomeInterface {
     // deklarasi variabel preferences dan mDatabase
     private lateinit var preferences: Preferences
     private lateinit var mDatabase : DatabaseReference
+
+    private var commentList: ArrayList<Comment> = arrayListOf(Comment(0, "Lina", "Buat Lu yang pengen ngembangin akun Instagram dengan cara full Organik (tanpa iklan, tanpa FU, tanpa tools)", "https://firebasestorage.googleapis.com/v0/b/kurditing.appspot.com/o/images%2Fal%201.png?alt=media&token=7007628a-8d74-42ee-ac13-a375223241e6"),
+            Comment(1, "Astuti", "Materinya lengkap, penyampaian mudah dimengerti, informatif sekali!", "https://firebasestorage.googleapis.com/v0/b/kurditing.appspot.com/o/images%2Fcl%201.png?alt=media&token=5ed4fa77-de7f-4ff7-a54c-1a0dcbb10810"),
+            Comment(2, "Asep", "Materinya mudah dipahami dan ada update materi juga manteb banget", "https://firebasestorage.googleapis.com/v0/b/kurditing.appspot.com/o/images%2Frk%201.png?alt=media&token=e661920d-c15a-4723-98e7-0f3a24d1b0d2"))
+    var mySQLitedb : myDBHelper? = null
 
     // deklarasi variabel dataList untuk menampung data kursus dari database
     private var dataList = ArrayList<Course>()
@@ -83,6 +94,32 @@ class HomeFragment : Fragment(), HomeInterface {
         // ambil data preference sesuai context aplikasi
         preferences = Preferences(requireActivity().applicationContext)
 
+        // lakukan pengecekan jika key ads bernilai true maka tampilkan banner ads dan sebaliknya
+        if (preferences.getValues("ads") == "true") {
+            // inisialisasi mobileAds dengan argumen context aplikasi
+            MobileAds.initialize(requireActivity().applicationContext) {}
+            // lakukan load ad pada adview
+            adView.loadAd(AdRequest.Builder().build())
+        }
+        else {
+            // jangan tampilkan banner ads apabila ads bernilai false
+            adView.visibility = View.GONE
+        }
+
+//        val request = AdRequest.Builder()
+//                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR) // All emulators
+////                .addTestDevice("AC98C820A50B4AD8A2106EDE96FB87D4") // My Galaxy Nexus test phone
+//                .build()
+//        adView.loadAd(request)
+
+//        adView.adListener = object : AdListener(){
+//        }
+
+//        mySQLitedb = myDBHelper(requireActivity().applicationContext)
+//        mySQLitedb = myDBHelper.getInstance(requireActivity().applicationContext)
+//        executeLoadDataTransaction()
+
+
         // set teks pada tv_nama sesuai dengan data nama pada preferences
         tv_nama.text = preferences.getValues("nama")
 
@@ -115,7 +152,7 @@ class HomeFragment : Fragment(), HomeInterface {
             }
         })
 
-        rv_popular.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+        rv_popular.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 val newHeight = recyclerView.measuredHeight
@@ -127,15 +164,33 @@ class HomeFragment : Fragment(), HomeInterface {
         })
     }
 
+    private fun executeLoadDataTransaction() {
+//        mySQLitedb = myDBHelper(requireActivity().applicationContext)
+        doAsync {
+            mySQLitedb?.beginCommentTransaction()
+            for(commentData in commentList){
+                mySQLitedb?.addCommentTransaction(commentData)
+                uiThread {
+//                    Toast.makeText(context, "EXECUTE", Toast.LENGTH_SHORT).show()
+                }
+            }
+            mySQLitedb?.successCommentTransaction()
+            mySQLitedb?.endCommentTransaction()
+            mySQLitedb?.close()
+            uiThread {
+            }
+        }
+    }
+
     private fun getData() {
         mDatabase.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(databaseError: DatabaseError) {
-                Toast.makeText(context, ""+databaseError.message, Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "" + databaseError.message, Toast.LENGTH_SHORT).show()
             }
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 dataList.clear()
-                for (getdataSnapshot in dataSnapshot.children){
+                for (getdataSnapshot in dataSnapshot.children) {
                     var course = getdataSnapshot.getValue(Course::class.java)
                     dataList.add(course!!)
                 }
@@ -162,7 +217,7 @@ class HomeFragment : Fragment(), HomeInterface {
     // pada rv_best_seller beserta intent ketika melakukan klik pada item recycler view
     override fun showBestSeller(model: ArrayList<Course>) {
         rv_best_seller?.adapter = BestSellerAdapter(model){
-            var intent = Intent(context, DescriptionActivity::class.java).putExtra("data",it)
+            var intent = Intent(context, DescriptionActivity::class.java).putExtra("data", it)
             startActivity(intent)
         }
     }
@@ -171,8 +226,18 @@ class HomeFragment : Fragment(), HomeInterface {
     // pada rv_popular beserta intent ketika melakukan klik pada item recycler view
     override fun showPopular(model: ArrayList<Course>) {
         rv_popular?.adapter = PopularAdapter(model){
-            var intent = Intent(context, DescriptionActivity::class.java).putExtra("data",it)
+            var intent = Intent(context, DescriptionActivity::class.java).putExtra("data", it)
             startActivity(intent)
         }
+    }
+
+    override fun onPause() {
+        mySQLitedb?.close()
+        super.onPause()
+    }
+
+    override fun onDestroy() {
+//        mySQLitedb?.close()
+        super.onDestroy()
     }
 }

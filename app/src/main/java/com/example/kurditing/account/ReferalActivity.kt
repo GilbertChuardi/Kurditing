@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.provider.ContactsContract
 import android.provider.ContactsContract.CommonDataKinds.Phone
 import android.provider.ContactsContract.RawContacts
+import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -23,31 +24,36 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kurditing.ContactAdapter
 import com.example.kurditing.R
 import com.example.kurditing.model.Contact
+import com.example.kurditing.model.User
 import com.example.kurditing.utils.Preferences
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_referal.*
 import kotlinx.android.synthetic.main.activity_terms.iv_back
 
 
-class ReferalActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> {
+class ReferalActivity : AppCompatActivity()
+//        , LoaderManager.LoaderCallbacks<Cursor>
+{
 
     private lateinit var preferences: Preferences
     private lateinit var mDatabase : DatabaseReference
 
-//    private var dataList = ArrayList<String>()
-//    val referalList: ArrayList<String> = ArrayList()
+    private var dataList = ArrayList<String>()
+    val referalList: ArrayList<String> = ArrayList()
 
-    private var dataList = ArrayList<Contact>()
-    private var name = ArrayList<String>()
-    private var phone = ArrayList<String>()
-    private var email = ArrayList<String>()
-    private var photo = ArrayList<Bitmap>()
+//    private var dataList = ArrayList<Contact>()
+//    private var name = ArrayList<String>()
+//    private var phone = ArrayList<String>()
+//    private var email = ArrayList<String>()
+//    private var photo = ArrayList<Bitmap>()
+//
+//    var FirstName = ContactsContract.Contacts.DISPLAY_NAME
+//    var SecondName = ContactsContract.Contacts.DISPLAY_NAME
+//    var PhoneNumber = ContactsContract.CommonDataKinds.Phone.NUMBER
+//    var Email = ContactsContract.CommonDataKinds.Email.ADDRESS
+//    var Photo = ContactsContract.CommonDataKinds.Photo.PHOTO_ID
 
-    var FirstName = ContactsContract.Contacts.DISPLAY_NAME
-    var SecondName = ContactsContract.Contacts.DISPLAY_NAME
-    var PhoneNumber = ContactsContract.CommonDataKinds.Phone.NUMBER
-    var Email = ContactsContract.CommonDataKinds.Email.ADDRESS
-    var Photo = ContactsContract.CommonDataKinds.Photo.PHOTO_ID
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,56 +69,56 @@ class ReferalActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Curso
         }
         btn_ambil_kelas.setOnClickListener(){
             ShareCompat.IntentBuilder
-                .from(this)
-                .setType("text/plain")
-                .setChooserTitle("Share with....")
-                .setText("https://kurditing.com/?ref=wilson")
-                .startChooser()
+                    .from(this)
+                    .setType("text/plain")
+                    .setChooserTitle("Share with....")
+                    .setText("https://kurditing.com/?ref=wilson")
+                    .startChooser()
         }
 
         btn_salin_link.setOnClickListener(){
             val clipboard: ClipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-            val clip = ClipData.newPlainText(label.toString(), "https://kurditing.com/?ref=wilson")
+            val clip = ClipData.newPlainText(label.toString(),"https://kurditing.com/?ref=wilson")
             clipboard.setPrimaryClip(clip)
             Toast.makeText(this@ReferalActivity, "Link Berhasil Disalin", Toast.LENGTH_LONG).show()
         }
 
-//        val valueEventListener: ValueEventListener = object : ValueEventListener {
-//            override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                for (ds in dataSnapshot.children) {
-//                    val subReferal: String? = ds.key
-//                    if (subReferal != null) {
-//                        referalList.add(subReferal)
-//                    }
-//                }
-//
-//                dataList.clear()
-//                val valuesEventListener: ValueEventListener = object : ValueEventListener {
-//                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                        val user: User? = dataSnapshot.getValue(User::class.java)
-//                        if (user != null) {
-//                            dataList.add(user.nama.toString())
-//                        }
-//                        rv_referal.adapter = ReferalAdapter(dataList){}
-//                    }
-//
-//                    override fun onCancelled(databaseError: DatabaseError) {
-//                        Log.d(String(), databaseError.message) //Don't ignore errors!
-//                    }
-//                }
-//
-//                referalList.forEach {
-//                    var mDB = FirebaseDatabase.getInstance().getReference("user").child(it)
-//                    mDB.addValueEventListener(valuesEventListener)
-//                }
-//            }
-//
-//            override fun onCancelled(databaseError: DatabaseError) {
-//                Log.d(String(), databaseError.message) //Don't ignore errors!
-//            }
-//        }
-//
-//        mDatabase.addValueEventListener(valueEventListener)
+        val valueEventListener: ValueEventListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (ds in dataSnapshot.children) {
+                    val subReferal: String? = ds.key
+                    if (subReferal != null) {
+                        referalList.add(subReferal)
+                    }
+                }
+
+                dataList.clear()
+                val valuesEventListener: ValueEventListener = object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        val user: User? = dataSnapshot.getValue(User::class.java)
+                        if (user != null) {
+                            dataList.add(user.nama.toString())
+                        }
+                        rv_referal.adapter = ReferalAdapter(dataList){}
+                    }
+
+                    override fun onCancelled(databaseError: DatabaseError) {
+                        Log.d(String(), databaseError.message) //Don't ignore errors!
+                    }
+                }
+
+                referalList.forEach {
+                    var mDB = FirebaseDatabase.getInstance().getReference("user").child(it)
+                    mDB.addValueEventListener(valuesEventListener)
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.d(String(), databaseError.message) //Don't ignore errors!
+            }
+        }
+
+        mDatabase.addValueEventListener(valueEventListener)
 //        val valuesEventListener: ValueEventListener = object : ValueEventListener {
 //            override fun onDataChange(dataSnapshot: DataSnapshot) {
 //                val user: User? = dataSnapshot.getValue(User::class.java)
@@ -135,62 +141,60 @@ class ReferalActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Curso
 
 
 
+        rv_referal.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+        getData()
+    }
+
+    private fun getData() {
+        mDatabase.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(databaseError: DatabaseError) {
+                Toast.makeText(this@ReferalActivity, ""+databaseError.message, Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                rv_referal.adapter = ReferalAdapter(dataList){
+                }
+            }
+
+        })
+    }
+
+//    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
+//    override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
+//        var MyContentUri = ContactsContract.Data.CONTENT_URI
+//        var myProjection = arrayOf(FirstName, SecondName, PhoneNumber, Email)
+//        var selectArgs = arrayOf(ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE,
+//                ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
+//        return CursorLoader(
+//                this, MyContentUri, myProjection,
+//                ContactsContract.Data.MIMETYPE + " IN (" + ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE + ", " + ContactsContract.CommonDataKinds.Email.CONTENT_TYPE + ")", selectArgs, null
+//        )
+//    }
+//
+//    override fun onLoadFinished(loader: Loader<Cursor>, data: Cursor?) {
+//        dataList.clear()
+//        if (data != null) {
+//            data.moveToFirst()
+//            while (!data.isAfterLast) {
+//                dataList.add(
+//                        Contact(
+//                                nama_pertama = data.getString(data.getColumnIndex(FirstName)),
+//                                nama_kedua = data.getString(data.getColumnIndex(SecondName)),
+//                                no_hp = data.getString(data.getColumnIndex(PhoneNumber)),
+//                                email = data.getString(data.getColumnIndex(Email))
+//                        )
+//                )
+//                data.moveToNext()
+//            }
+//        }
+//
 //        rv_referal.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 //        rv_referal.adapter = ContactAdapter(dataList)
-
-//        getData()
-        LoaderManager.getInstance(this).initLoader(1, null, this)
-    }
-
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-    override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
-        var MyContentUri = ContactsContract.Data.CONTENT_URI
-        var myProjection = arrayOf(FirstName, SecondName, PhoneNumber, Email)
-        var selectArgs = arrayOf(ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE,
-                ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
-        return CursorLoader(
-                this, MyContentUri, myProjection,
-                ContactsContract.Data.MIMETYPE + " IN (" + ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE + ", " + ContactsContract.CommonDataKinds.Email.CONTENT_TYPE + ")", selectArgs, null
-        )
-    }
-
-    override fun onLoadFinished(loader: Loader<Cursor>, data: Cursor?) {
-        dataList.clear()
-        if (data != null) {
-            data.moveToFirst()
-            while (!data.isAfterLast) {
-                dataList.add(
-                        Contact(
-                                nama_pertama = data.getString(data.getColumnIndex(FirstName)),
-                                nama_kedua = data.getString(data.getColumnIndex(SecondName)),
-                                no_hp = data.getString(data.getColumnIndex(PhoneNumber)),
-                                email = data.getString(data.getColumnIndex(Email))
-                        )
-                )
-                data.moveToNext()
-            }
-        }
-
-        rv_referal.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        rv_referal.adapter = ContactAdapter(dataList)
-    }
-
-    override fun onLoaderReset(loader: Loader<Cursor>) {
-        rv_referal.adapter?.notifyDataSetChanged()
-    }
-
-//    private fun getData() {
-//        mDatabase.addValueEventListener(object : ValueEventListener {
-//            override fun onCancelled(databaseError: DatabaseError) {
-//                Toast.makeText(this@ReferalActivity, ""+databaseError.message, Toast.LENGTH_SHORT).show()
-//            }
+//    }
 //
-//            override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                rv_referal.adapter = ReferalAdapter(dataList){
-//                }
-//            }
-//
-//        })
+//    override fun onLoaderReset(loader: Loader<Cursor>) {
+//        rv_referal.adapter?.notifyDataSetChanged()
 //    }
 
 //    fun getContacts(): ArrayList<HashMap<String, Any?>>? {

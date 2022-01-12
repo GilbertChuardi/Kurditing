@@ -105,6 +105,7 @@ class SignInActivity : AppCompatActivity() {
                                 user = dataSnapshot.getValue(User::class.java)
 //                                Toast.makeText(this@SignInActivity, "Nama IN: " + user?.nama.toString(), Toast.LENGTH_LONG).show()
 
+                                preferences.setValues("ads", "true")
                                 preferences.setValues("uid", user?.uid.toString())
                                 preferences.setValues("nama", user?.nama.toString())
                                 preferences.setValues("email", user?.email.toString())
