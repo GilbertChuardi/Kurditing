@@ -1,31 +1,40 @@
 package com.example.kurditing
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils.replace
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import androidx.room.Room
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.kurditing.account.HistoryTransaction
+import com.example.kurditing.account.MyDBRoomHelper
 import com.example.kurditing.home.HomeActivity
 import com.example.kurditing.mycourse.CourseFragment
 import com.example.kurditing.utils.Preferences
 import kotlinx.android.synthetic.main.activity_payment.*
+import org.jetbrains.anko.doAsync
 import java.text.DecimalFormat
 import java.text.NumberFormat
+import java.time.LocalDateTime
 import java.util.*
+import kotlin.random.Random
 
 
 class PaymentActivity : AppCompatActivity() {
 
     private lateinit var preferences: Preferences
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_payment)
@@ -49,9 +58,24 @@ class PaymentActivity : AppCompatActivity() {
             finish()
         }
 
+        var db= Room.databaseBuilder(
+            this,
+            MyDBRoomHelper::class.java,
+            "kurditing.db"
+        ).build()
+
         btn_beli_kelas.setOnClickListener(){
             if(radioButton.isChecked){
                 getCustomDialog()
+//                var hasil = ""
+                doAsync {
+                    var historyTmp = HistoryTransaction(Random.nextInt())
+                    historyTmp.course_name = tv_judul.text.toString()
+//                    historyTmp.price = (tv_harga.text as String).toInt()
+                    historyTmp.price = intent.getStringExtra("harga").toString().toInt()
+                    historyTmp.created_at = LocalDateTime.now().toString()
+                    db.historyTransactionDAO().insertAll(historyTmp)
+                }
             }else{
                 Toast.makeText(this,"Anda belum memilih metode pembayaran",Toast.LENGTH_SHORT).show()
             }
