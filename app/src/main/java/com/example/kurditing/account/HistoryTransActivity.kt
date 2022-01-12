@@ -23,6 +23,7 @@ class HistoryTransActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_history_trans)
 
+        // Melakukan build Room database
         var db= Room.databaseBuilder(
             this,
             MyDBRoomHelper::class.java,
@@ -41,17 +42,22 @@ class HistoryTransActivity : AppCompatActivity() {
                 }
             }
         }
+        // menjalankan fungsi readFileInternal saat tombol btn_lihat_trans diklik
+//            readFileInternal();
 
         btn_lihat_trans.setOnClickListener{
-            // menjalankan fungsi readFileInternal saat tombol btn_lihat_trans diklik
-//            readFileInternal();
+            // Deklarasi variabel kosong untuk menampung data yang akan diambil
             var hasil = ""
             doAsync {
+                // Menjalakan query getAllData()
                 db.historyTransactionDAO().getAllData().forEach{
+                    // Memasukkan data yang diambil dari tabel kedalam variabel hasil
                     hasil += it.created_at.toString() + "\n" + it.course_name.toString() + "\nIDR " + it.price.toString() + "\n\n"
                 }
+                // Mengubah isi textview tv_riwayat_trans dengan isi variabel hasil
                 tv_riwayat_trans.setText(hasil)
                 uiThread {
+                    // Mencetak variabel hasil pada Log untuk mengecek apakah data berhasil diambil atau tidak
                     Log.w("Hasil DB", hasil)
                 }
             }

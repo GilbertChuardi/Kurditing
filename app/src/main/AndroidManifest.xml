@@ -20,10 +20,26 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Kurditing.NoActionBar"
         android:usesCleartextTraffic="true">
+
+        <!-- pendaftaran receiver untuk BestSellerWidget disertai intent filter dan meta-data -->
+        <receiver android:name=".BestSellerWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/best_seller_widget_info" />
+        </receiver>
+
+        <!-- daftarkan BestSellerWidgetService dengan memberi permisi BIND_REMOTEVIEWS -->
+        <service android:name=".widget.BestSellerWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
         <activity
             android:name=".account.EditProfileActivity"
             android:label="@string/title_activity_edit_profile"
-            android:theme="@style/Theme.Kurditing.NoActionBar.NoActionBar"></activity>
+            android:theme="@style/Theme.Kurditing.NoActionBar.NoActionBar" />
         <activity android:name=".ReferenceActivity" />
         <activity android:name=".JokeActivity" />
         <!--
@@ -74,24 +90,24 @@
         </activity>
         <activity android:name=".SignUpActivity" /> <!-- <activity android:name=".SignUpActivity" android:windowSoftInputMode="stateHidden|adjustResize"/> -->
         <activity android:name=".account.AccountActivity" />
-        <activity android:name=".DescriptionActivity" />
+        <activity android:name=".description.DescriptionActivity" />
         <activity
             android:name=".home.HomeActivity"
             android:windowSoftInputMode="adjustPan">
 
-             <intent-filter>
-             <action android:name="android.intent.action.MAIN" />
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
 
 
-             <category android:name="android.intent.category.LAUNCHER" />
-             </intent-filter>
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity android:name=".SplashScreenActivity">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".account.TermsActivity" />
         <activity android:name=".account.HistoryTransActivity" />

@@ -18,6 +18,7 @@ import androidx.core.app.NotificationCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.kurditing.R
+import com.example.kurditing.myDBHelper
 import kotlinx.android.synthetic.main.activity_home.*
 
 

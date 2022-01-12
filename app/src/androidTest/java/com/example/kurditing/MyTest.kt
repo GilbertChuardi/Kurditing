@@ -1,19 +1,11 @@
 package com.example.kurditing
 
-import androidx.fragment.app.testing.FragmentScenario
-import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.intent.Intents
-import androidx.test.espresso.intent.Intents.intended
-import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
-import androidx.test.espresso.intent.rule.IntentsTestRule
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
-import com.example.kurditing.home.HomeActivity
-import com.example.kurditing.search.SearchFragment
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -136,7 +128,7 @@ class MyTest {
         // membuat thread untuk sleep selama 5 detik untuk menunggu proses login sebelum melanjutkan test berikutnya dikarenakan tesnya terlalu cepat sehingga jika tidak menggunkan thread.sleep maka tesnya akan error
         Thread.sleep(5000)
         // cek apakah FragmentHome sudah ditampilkan atau belum
-        onView(withId(R.id.FragmentHome)).check(matches(isDisplayed()))
+        onView(withId(R.id.fragment_home)).check(matches(isDisplayed()))
         // click button dengan id accountFragment
         onView(withId(R.id.accountFragment)).perform(ViewActions.click())
         // cek apakah textview dengan id tv_nama isinya sama dengan "Wilson Annga" atau tidak

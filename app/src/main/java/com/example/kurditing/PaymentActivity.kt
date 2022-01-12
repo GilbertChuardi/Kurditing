@@ -3,23 +3,19 @@ package com.example.kurditing
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.text.TextUtils.replace
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentTransaction
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import androidx.room.Room
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.kurditing.R
 import com.example.kurditing.account.HistoryTransaction
 import com.example.kurditing.account.MyDBRoomHelper
 import com.example.kurditing.home.HomeActivity
-import com.example.kurditing.mycourse.CourseFragment
 import com.example.kurditing.utils.Preferences
 import kotlinx.android.synthetic.main.activity_payment.*
 import org.jetbrains.anko.doAsync
@@ -65,15 +61,21 @@ class PaymentActivity : AppCompatActivity() {
         ).build()
 
         btn_beli_kelas.setOnClickListener(){
+            // Pengecekan apakah radioButton diceklis atau tidak
             if(radioButton.isChecked){
+                // Memunculkan popup
                 getCustomDialog()
-//                var hasil = ""
                 doAsync {
+                    // Deklarasi data yang akan dimasukkan ke tabel
+                    // Pertama mendeklarasi isi id secara random
                     var historyTmp = HistoryTransaction(Random.nextInt())
+                    // Medeklarasi isi course_name
                     historyTmp.course_name = tv_judul.text.toString()
-//                    historyTmp.price = (tv_harga.text as String).toInt()
+                    // Mendeklarasi isi price
                     historyTmp.price = intent.getStringExtra("harga").toString().toInt()
+                    // Mendeklarasi isi created_aT
                     historyTmp.created_at = LocalDateTime.now().toString()
+                    // Memasukkan data kedalam database dengan query insertAll()
                     db.historyTransactionDAO().insertAll(historyTmp)
                 }
             }else{

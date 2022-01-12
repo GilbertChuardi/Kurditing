@@ -1,6 +1,5 @@
 package com.example.kurditing.home.dashboard
 
-import android.R.attr.minHeight
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,14 +9,18 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.kurditing.DescriptionActivity
+import com.example.kurditing.description.DescriptionActivity
 import com.example.kurditing.R
 import com.example.kurditing.home.HomeInterface
 import com.example.kurditing.home.HomePresenter
+import com.example.kurditing.model.Comment
 import com.example.kurditing.model.Course
+import com.example.kurditing.myDBHelper
 import com.example.kurditing.utils.Preferences
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.fragment_home.*
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -36,6 +39,11 @@ class HomeFragment : Fragment(), HomeInterface {
     // deklarasi variabel preferences dan mDatabase
     private lateinit var preferences: Preferences
     private lateinit var mDatabase : DatabaseReference
+
+    private var commentList: ArrayList<Comment> = arrayListOf(Comment(0,"Lina", "Buat Lu yang pengen ngembangin akun Instagram dengan cara full Organik (tanpa iklan, tanpa FU, tanpa tools)", "https://firebasestorage.googleapis.com/v0/b/kurditing.appspot.com/o/images%2Fal%201.png?alt=media&token=7007628a-8d74-42ee-ac13-a375223241e6"),
+            Comment(1, "Astuti", "Materinya lengkap, penyampaian mudah dimengerti, informatif sekali!", "https://firebasestorage.googleapis.com/v0/b/kurditing.appspot.com/o/images%2Fcl%201.png?alt=media&token=5ed4fa77-de7f-4ff7-a54c-1a0dcbb10810"),
+            Comment(2, "Asep", "Materinya mudah dipahami dan ada update materi juga manteb banget", "https://firebasestorage.googleapis.com/v0/b/kurditing.appspot.com/o/images%2Frk%201.png?alt=media&token=e661920d-c15a-4723-98e7-0f3a24d1b0d2"))
+    var mySQLitedb : myDBHelper? = null
 
     // deklarasi variabel dataList untuk menampung data kursus dari database
     private var dataList = ArrayList<Course>()
@@ -80,6 +88,10 @@ class HomeFragment : Fragment(), HomeInterface {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        mySQLitedb = myDBHelper(requireActivity().applicationContext)
+//        mySQLitedb = myDBHelper.getInstance(requireActivity().applicationContext)
+//        executeLoadDataTransaction()
 
         // ambil data preference sesuai context aplikasi
         preferences = Preferences(requireActivity().applicationContext)
@@ -126,6 +138,24 @@ class HomeFragment : Fragment(), HomeInterface {
                 }
             }
         })
+    }
+
+    private fun executeLoadDataTransaction() {
+//        mySQLitedb = myDBHelper(requireActivity().applicationContext)
+        doAsync {
+            mySQLitedb?.beginCommentTransaction()
+            for(commentData in commentList){
+                mySQLitedb?.addCommentTransaction(commentData)
+                uiThread {
+                    Toast.makeText(context, "EXECUTE", Toast.LENGTH_SHORT).show()
+                }
+            }
+            mySQLitedb?.successCommentTransaction()
+            mySQLitedb?.endCommentTransaction()
+            mySQLitedb?.close()
+            uiThread {
+            }
+        }
     }
 
     private fun getData() {
@@ -175,5 +205,15 @@ class HomeFragment : Fragment(), HomeInterface {
             var intent = Intent(context, DescriptionActivity::class.java).putExtra("data",it)
             startActivity(intent)
         }
+    }
+
+    override fun onPause() {
+        mySQLitedb?.close()
+        super.onPause()
+    }
+
+    override fun onDestroy() {
+//        mySQLitedb?.close()
+        super.onDestroy()
     }
 }
